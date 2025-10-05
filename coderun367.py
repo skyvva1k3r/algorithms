@@ -4,16 +4,16 @@ import sys
 def main():
     n = input().split()
     n, k = int(n[0]), int(n[1])
-    prec = 0
-    recall = 0
+    nums = ["2", "3", "4", "5", "6", "7", "8", "9"]
     codes = ["BIG", "BAG", "BUG", "BG", "UG"]
+    prec, rec = 0, 0
 
     for i in range(n+k):
         temp = input()
         flag = False
         j = 0
+        temp=list(temp)
         while j != len(temp):
-            temp=list(temp)
             if temp[j].isnumeric() and flag:
                 temp.insert(j, "/")
                 flag = False
@@ -26,21 +26,15 @@ def main():
                 j += 1
         temp ="".join(temp)
         temp = temp.split("/")
-        if len(temp) <= 4:
-            if int(temp[0]) > 2 and len(temp[0]) < 2:
-                if temp[1] == "-":
-                    if len(temp[2]) == 4 and temp[2].isnumeric():
-                        if temp[3] in codes:
-                            if temp[0] == "5" and (temp[3]=="BIG" or temp[3] == "BAG"):
-                                pass
-                            else:
-                                recall += 1
-                                if i <= k:
-                                    prec += 1
-    print(f"{prec/recall}".ljust(6, "0"),"\n",f"{prec/n}".ljust(6, "0"), sep = "")
+        if len(temp) == 4 and temp[0] in nums and temp[1] == "-" and len(temp[2]) == 4 and temp[2].isdigit() and int(temp[2]) > 0 and temp[3] in codes:
+            if not (temp[0] == "5" and (temp[3] == "BIG" or temp[3] == "BAG")):
+                if i < n:
+                    prec += 1
+                rec += 1
+    recall = prec / n if n else 0.0
+    precision = prec / (rec) if (rec) else 0.0
 
-
-
+    print(f"{recall:.4f} {precision:.4f}")
 
 if __name__ == '__main__':
     main()
